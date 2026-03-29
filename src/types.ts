@@ -5,7 +5,6 @@ export interface Translation {
   welcome: {
     title: string;
     description: string;
-    descriptionSi: string;
     getStarted: string;
   };
   home: {
@@ -52,7 +51,6 @@ export interface Translation {
     joinGroup: string;
   };
   footer: {
-    project: string;
     questions: string;
   };
 }

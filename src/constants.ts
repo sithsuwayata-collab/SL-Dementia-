@@ -6,15 +6,14 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     welcome: {
       title: "Welcome to SL Dementia",
       description: "Small changes today can protect your memory tomorrow. This app helps you understand dementia and assess your personal risk factors.",
-      descriptionSi: "අද කරන කුඩා වෙනස්කම් හෙට ඔබේ මතකය ආරක්ෂා කළ හැකිය. මෙම යෙදුම ඔබට ඩිමෙන්ශියාව තේරුම් ගැනීමට සහ ඔබේ පුද්ගලික අවදානම් සාධක තක්සේරු කිරීමට උපකාරී වේ.",
       getStarted: "Get Started"
     },
     home: {
-      tagline: "Protect your memory, protect your future.",
-      checkRisk: "Check My Risk",
-      learnMore: "Learn About Dementia",
-      connect: "Connect with Community",
-      disclaimer: "This is not a medical diagnosis. This tool is for awareness only."
+      tagline: "Support starts with awareness.",
+      checkRisk: "Assess",
+      learnMore: "Learn",
+      connect: "Community",
+      disclaimer: "This app does not provide a medical diagnosis. It is designed to promote awareness, connection, and support."
     },
     assessment: {
       title: "Dementia Risk Self-Assessment",
@@ -53,8 +52,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
       joinGroup: "Join Facebook Group"
     },
     footer: {
-      project: "A community project of SL Dementia",
-      questions: "App questions? Message me"
+      questions: "App questions? Message me: @maheshmnishantha"
     }
   },
   si: {
@@ -62,15 +60,14 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     welcome: {
       title: "SL Dementia වෙත සාදරයෙන් පිළිගනිමු",
       description: "අද කරන කුඩා වෙනස්කම් හෙට ඔබේ මතකය ආරක්ෂා කළ හැකිය. මෙම යෙදුම ඔබට ඩිමෙන්ශියාව තේරුම් ගැනීමට සහ ඔබේ පුද්ගලික අවදානම් සාධක තක්සේරු කිරීමට උපකාරී වේ.",
-      descriptionSi: "දැන් මේ වැඩේ කෙරෙන්නේ මෙහෙමයි, තෝරා ගත් modifiable risk factors 14ක් මේ තක්සේරු කිරීමට යොදා ගන්නවා...",
       getStarted: "ආරම්භ කරන්න"
     },
     home: {
-      tagline: "ඔබේ මතකය සුරකින්න, ඔබේ අනාගතය සුරකින්න.",
-      checkRisk: "මගේ අවදානම පරීක්ෂා කරන්න",
-      learnMore: "ඩිමෙන්ශියාව ගැන ඉගෙන ගන්න",
-      connect: "ප්‍රජාව සමඟ සම්බන්ධ වන්න",
-      disclaimer: "මෙය වෛද්‍ය රෝග විනිශ්චයක් නොවේ. මෙම මෙවලම දැනුවත් කිරීම සඳහා පමණි."
+      tagline: "සහයෝගය ආරම්භ වන්නේ දැනුවත්භාවයෙනි.",
+      checkRisk: "තක්සේරු",
+      learnMore: "ඉගෙනුම",
+      connect: "ප්‍රජාව",
+      disclaimer: "මෙම යෙදුම වෛද්‍ය රෝග විනිශ්චයක් ලබා නොදේ. එය දැනුවත් කිරීම, සම්බන්ධතාවය සහ සහයෝගය ප්‍රවර්ධනය කිරීම සඳහා නිර්මාණය කර ඇත."
     },
     assessment: {
       title: "ඩිමෙන්ශියා අවදානම් ස්වයං තක්සේරුව",
@@ -109,8 +106,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
       joinGroup: "ෆේස්බුක් සමූහයට එක්වන්න"
     },
     footer: {
-      project: "SL Dementia හි ප්‍රජා ව්‍යාපෘතියකි",
-      questions: "යෙදුම පිළිබඳ ප්‍රශ්න? මට පණිවිඩයක් එවන්න"
+      questions: "යෙදුම පිළිබඳ ප්‍රශ්න? මට පණිවිඩයක් එවන්න: @maheshmnishantha"
     }
   }
 };
