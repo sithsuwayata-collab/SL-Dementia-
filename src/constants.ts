@@ -18,7 +18,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     assessment: {
       title: "Dementia Risk Self-Assessment",
       introEn: "Answer 14 simple questions about your lifestyle and health.",
-      introSi: "දැන් මේ වැඩේ කෙරෙන්නේ මෙහෙමයි, තෝරා ගත් modifiable risk factors 14ක් මේ තක්සේරු කිරීමට යොදා ගන්නවා...",
+      introSi: "තෝරා ගත් modifiable risk factors 14ක් මේ තක්සේරු කිරීමට යොදා ගන්නවා...",
       takesTime: "Takes 2–3 minutes",
       start: "Start Assessment",
       questionOf: "Question",
@@ -59,7 +59,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     appName: "SL Dementia",
     welcome: {
       title: "SL Dementia වෙත සාදරයෙන් පිළිගනිමු",
-      description: "අද කරන කුඩා වෙනස්කම් හෙට ඔබේ මතකය ආරක්ෂා කළ හැකිය. මෙම යෙදුම ඔබට ඩිමෙන්ශියාව තේරුම් ගැනීමට සහ ඔබේ පුද්ගලික අවදානම් සාධක තක්සේරු කිරීමට උපකාරී වේ.",
+      description: "අද ඔබ තෝරා ගන්නා සෞඛ්‍යානුකූල වෙනස්වීමක්, ඔබේ හෙට දවස රැක දෙනු ඇත. මෙම ඇප් එක මගින් ඩිමෙන්ෂියාව පිළිබඳ දැනුමක් ලබා ගැනිම, අවදානම් හදුනාගැනීම මෙන්ම උපකාරයන් ලබා ගැනීමට එක්වීමටද පහසුකම් ලබා දේ",
       getStarted: "ආරම්භ කරන්න"
     },
     home: {
@@ -72,7 +72,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     assessment: {
       title: "ඩිමෙන්ශියා අවදානම් ස්වයං තක්සේරුව",
       introEn: "ඔබේ ජීවන රටාව සහ සෞඛ්‍යය පිළිබඳ සරල ප්‍රශ්න 14 කට පිළිතුරු දෙන්න.",
-      introSi: "දැන් මේ වැඩේ කෙරෙන්නේ මෙහෙමයි, තෝරා ගත් modifiable risk factors 14ක් මේ තක්සේරු කිරීමට යොදා ගන්නවා...",
+      introSi: "තෝරා ගත් modifiable risk factors 14ක් මේ තක්සේරු කිරීමට යොදා ගන්නවා...",
       takesTime: "විනාඩි 2-3 ක් ගතවේ",
       start: "තක්සේරුව ආරම්භ කරන්න",
       questionOf: "ප්‍රශ්නය",
@@ -258,7 +258,7 @@ export const LEARN_CONTENT = {
   en: [
     {
       title: "What is Dementia?",
-      content: "Dementia is not a single disease; it's an overall term — like heart disease — that covers a wide range of specific medical conditions, including Alzheimer's disease. Disorders grouped under the general term 'dementia' are caused by abnormal brain changes. These changes trigger a decline in thinking skills, also known as cognitive abilities, severe enough to impair daily life and independent function."
+      content: "Dementia is not a single disease; it's an overall term , like heart disease; that covers a wide range of specific medical conditions, including Alzheimer's disease. Disorders grouped under the general term 'dementia' are caused by abnormal brain changes. These changes trigger a decline in thinking skills, also known as cognitive abilities, severe enough to impair daily life and independent function."
     },
     {
       title: "Early Signs",
@@ -276,7 +276,7 @@ export const LEARN_CONTENT = {
   si: [
     {
       title: "ඩිමෙන්ශියාව යනු කුමක්ද?",
-      content: "ඩිමෙන්ශියාව යනු තනි රෝගයක් නොවේ; එය හෘද රෝග වැනි සමස්ත පදයකි - ඇල්සයිමර් රෝගය ඇතුළු විශේෂිත වෛද්‍ය තත්වයන් රාශියක් ආවරණය කරයි. 'ඩිමෙන්ශියාව' යන පොදු පදය යටතේ කාණ්ඩගත කර ඇති ආබාධ ඇතිවන්නේ අසාමාන්‍ය මොළයේ වෙනස්කම් නිසාය. මෙම වෙනස්කම් දෛනික ජීවිතයට සහ ස්වාධීන ක්‍රියාකාරිත්වයට බාධා පමුණුවන තරමට බරපතල වන චින්තන කුසලතා පිරිහීමට හේතු වේ."
+      content: "ඩිමෙන්ශියාව යනු තනි රෝගයක් නොවේ;රෝග ලක්ෂණ ගණනාවක එකතුවත් වෙනුවෙන් යොදා ගන්නා නමකි. ඇල්සයිමර් රෝගය ඇතුළු විශේෂිත වෛද්‍ය තත්වයන් රාශියක් ආවරණය කරයි. 'ඩිමෙන්ශියාව' යන පොදු පදය යටතේ කාණ්ඩගත කර ඇති ආබාධ ඇතිවන්නේ අසාමාන්‍ය මොළයේ වෙනස්කම් නිසාය. මෙම වෙනස්කම් දෛනික ජීවිතයට සහ ස්වාධීන ක්‍රියාකාරිත්වයට බාධා පමුණුවන තරමට බරපතල වන චින්තන කුසලතා පිරිහීමට හේතු වේ."
     },
     {
       title: "මුල් ලක්ෂණ",
