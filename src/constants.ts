@@ -49,7 +49,30 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     community: {
       title: "Community",
       message: "You are not alone. Join our community for support and shared experiences.",
-      joinGroup: "Join Facebook Group"
+      joinGroup: "Join Facebook Group",
+      messageMe: "App questions? Message me"
+    },
+    game: {
+      title: "Brain Story Challenge",
+      intro: "A daily cognitive exercise to boost your memory and focus.",
+      start: "Start Game",
+      step1Title: "Step 1: Memory",
+      step1Desc: "Memorize these items. You have 5 seconds!",
+      ready: "Ready for the next step?",
+      next: "Next",
+      step2Title: "Step 2: Story",
+      step3Title: "Step 3: Visual Memory",
+      step3Desc: "Memorize the sequence of symbols.",
+      step4Title: "Step 4: Ordered Recall",
+      step4Desc: "Select the original items in the correct order.",
+      resultTitle: "Challenge Complete!",
+      score: "Your Score",
+      feedbackGood: "Excellent! Your cognitive focus is very sharp today.",
+      feedbackMod: "Good effort! Regular practice helps maintain brain health.",
+      playAgain: "Play Again",
+      hardMode: "Hard Mode",
+      correct: "Correct!",
+      wrong: "Wrong!"
     },
     footer: {
       questions: "App questions? Message me: @maheshmnishantha"
@@ -103,7 +126,30 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     community: {
       title: "ප්‍රජාව",
       message: "ඔබ තනි වී නැත. සහයෝගය සහ අත්දැකීම් බෙදා ගැනීමට අපගේ ප්‍රජාවට එක්වන්න.",
-      joinGroup: "ෆේස්බුක් සමූහයට එක්වන්න"
+      joinGroup: "ෆේස්බුක් සමූහයට එක්වන්න",
+      messageMe: "යෙදුම පිළිබඳ ප්‍රශ්න? මට පණිවිඩයක් එවන්න"
+    },
+    game: {
+      title: "මොළයේ කතාවේ අභියෝගය",
+      intro: "ඔබේ මතකය සහ අවධානය වැඩි දියුණු කිරීම සඳහා දෛනික අභ්‍යාසයකි.",
+      start: "ක්‍රීඩාව ආරම්භ කරන්න",
+      step1Title: "පියවර 1: මතකය",
+      step1Desc: "මෙම දේවල් මතක තබා ගන්න. ඔබට තත්පර 5ක් ඇත!",
+      ready: "ඊළඟ පියවරට සූදානම්ද?",
+      next: "මීළඟ",
+      step2Title: "පියවර 2: කතාව",
+      step3Title: "පියවර 3: දෘශ්‍ය මතකය",
+      step3Desc: "සංකේතවල අනුපිළිවෙල මතක තබා ගන්න.",
+      step4Title: "පියවර 4: පිළිවෙලට මතක් කිරීම",
+      step4Desc: "මුල් දේවල් නිවැරදි අනුපිළිවෙලට තෝරන්න.",
+      resultTitle: "අභියෝගය අවසන්!",
+      score: "ඔබේ ලකුණු",
+      feedbackGood: "විශිෂ්ටයි! අද ඔබේ මතකය ඉතා තියුණුය.",
+      feedbackMod: "හොඳ උත්සාහයක්! නිතිපතා පුහුණුව මොළයේ සෞඛ්‍යය පවත්වා ගැනීමට උපකාරී වේ.",
+      playAgain: "නැවත ක්‍රීඩා කරන්න",
+      hardMode: "අසීරු මාදිලිය",
+      correct: "නිවැරදියි!",
+      wrong: "වැරදියි!"
     },
     footer: {
       questions: "යෙදුම පිළිබඳ ප්‍රශ්න? මට පණිවිඩයක් එවන්න: @maheshmnishantha"
@@ -292,3 +338,53 @@ export const LEARN_CONTENT = {
     }
   ]
 };
+
+export const GAME_ITEMS = [
+  { id: 1, icon: "🍎", name: { en: "Apple", si: "ඇපල්" } },
+  { id: 2, icon: "🔑", name: { en: "Key", si: "යතුර" } },
+  { id: 3, icon: "🚗", name: { en: "Car", si: "මෝටර් රථය" } },
+  { id: 4, icon: "🏠", name: { en: "House", si: "නිවස" } },
+  { id: 5, icon: "🕶️", name: { en: "Glasses", si: "කණ්ණාඩි" } },
+  { id: 6, icon: "📱", name: { en: "Phone", si: "දුරකථනය" } },
+  { id: 7, icon: "⌚", name: { en: "Watch", si: "ඔරලෝසුව" } },
+  { id: 8, icon: "☂️", name: { en: "Umbrella", si: "කුඩය" } },
+  { id: 9, icon: "🚲", name: { en: "Bicycle", si: "බයිසිකලය" } },
+  { id: 10, icon: "🎸", name: { en: "Guitar", si: "ගිටාරය" } },
+  { id: 11, icon: "👟", name: { en: "Shoe", si: "සපත්තුව" } },
+  { id: 12, icon: "🎒", name: { en: "Bag", si: "බෑගය" } }
+];
+
+export const GAME_SYMBOLS = ["⭐", "🌙", "☀️", "☁️", "🔥", "💧", "🍀", "💎"];
+
+export const GAME_STORIES = [
+  {
+    text: {
+      en: "Sunil went to the market on a rainy Tuesday. He bought three kilos of red rice and a bunch of yellow bananas. On his way back, he met his old friend Kamal near the clock tower. They talked for ten minutes before Sunil took a bus home.",
+      si: "සුනිල් වැසි සහිත අඟහරුවාදා දිනක වෙළඳපොළට ගියේය. ඔහු රතු සහල් කිලෝ තුනක් සහ කෙසෙල් ඇවරියක් මිලදී ගත්තේය. ආපසු එන අතරමගදී ඔහුට ඔහුගේ පැරණි මිතුරා වන කමල් ඔරලෝසු කණුව අසලදී මුණගැසුණි. සුනිල් බස් රථයකින් නිවසට යාමට පෙර ඔවුන් විනාඩි දහයක් කතා කළහ."
+    },
+    question: {
+      en: "What did Sunil buy at the market?",
+      si: "සුනිල් වෙළඳපොළෙන් මිලදී ගත්තේ මොනවාද?"
+    },
+    options: {
+      en: ["Red rice and bananas", "Vegetables and fish", "Bread and milk"],
+      si: ["රතු සහල් සහ කෙසෙල්", "එළවළු සහ මාළු", "පාන් සහ කිරි"]
+    },
+    correctIndex: 0
+  },
+  {
+    text: {
+      en: "Anula was preparing for her granddaughter's birthday party. She baked a chocolate cake with white frosting. The party started at five in the evening. Ten children came and they played in the garden until it got dark. Anula felt very happy seeing the children smile.",
+      si: "අනුලා ඇගේ මිණිබිරියගේ උපන්දින සාදය සඳහා සූදානම් වෙමින් සිටියාය. ඇය සුදු අයිසිං සහිත චොකලට් කේක් එකක් පිළිසූදානම් කළාය. සාදය සවස පහට ආරම්භ විය. ළමුන් දස දෙනෙකු පැමිණි අතර ඔවුන් අඳුරු වන තෙක් වත්තේ සෙල්ලම් කළහ. දරුවන් සිනාසෙනු දැක අනුලාට මහත් සතුටක් දැනුණි."
+    },
+    question: {
+      en: "What kind of cake did Anula bake?",
+      si: "අනුලා පිළිසූදානම් කළේ මොන වගේ කේක් එකක්ද?"
+    },
+    options: {
+      en: ["Vanilla cake", "Chocolate cake", "Fruit cake"],
+      si: ["වැනිලා කේක්", "චොකලට් කේක්", "පළතුරු කේක්"]
+    },
+    correctIndex: 1
+  }
+];

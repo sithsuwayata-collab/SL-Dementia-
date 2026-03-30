@@ -27,10 +27,15 @@ import {
   Info,
   AlertTriangle,
   FileText,
-  X
+  X,
+  Gamepad2,
+  Trophy,
+  Eye,
+  BookOpen,
+  ListOrdered
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TRANSLATIONS, QUESTIONS, LEARN_CONTENT } from './constants';
+import { TRANSLATIONS, QUESTIONS, LEARN_CONTENT, GAME_ITEMS, GAME_SYMBOLS, GAME_STORIES } from './constants';
 import { Language, Question, Option } from './types';
 
 // Helper to get icon component
@@ -54,7 +59,7 @@ const getIcon = (iconName: string, size = 24) => {
   }
 };
 
-type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community';
+type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community' | 'game';
 
 export default function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -64,7 +69,89 @@ export default function App() {
   const [showFullReport, setShowFullReport] = useState(false);
   const [showWarnings, setShowWarnings] = useState(false);
 
+  // Game State
+  const [gameStep, setGameStep] = useState<number>(0); // 0: Intro, 1: Memory, 2: Story, 3: Visual, 4: Recall, 5: Results
+  const [gameScore, setGameScore] = useState<number>(0);
+  const [hardMode, setHardMode] = useState<boolean>(false);
+  const [dailyGameData, setDailyGameData] = useState<any>(null);
+  const [userSelections, setUserSelections] = useState<any[]>([]);
+  const [showMemoryItems, setShowMemoryItems] = useState<boolean>(false);
+  const [gameFeedback, setGameFeedback] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+
   const t = TRANSLATIONS[lang];
+
+  // Game Generation Logic
+  const generateGameData = (isHard: boolean) => {
+    const itemCount = isHard ? 6 : 5;
+    
+    // Pick items randomly
+    const shuffledItems = [...GAME_ITEMS].sort(() => Math.random() - 0.5);
+    const selectedItems = shuffledItems.slice(0, itemCount);
+    
+    // Pick story randomly
+    const storyIndex = Math.floor(Math.random() * GAME_STORIES.length);
+    const selectedStory = GAME_STORIES[storyIndex];
+    
+    // Pick symbols randomly
+    const shuffledSymbols = [...GAME_SYMBOLS].sort(() => Math.random() - 0.5);
+    const selectedSymbols = shuffledSymbols.slice(0, 5);
+    
+    setDailyGameData({
+      items: selectedItems,
+      story: selectedStory,
+      symbols: selectedSymbols,
+      visualQuestion: Math.floor(Math.random() * 5) // Position to ask about
+    });
+  };
+
+  useEffect(() => {
+    if (screen === 'game' && gameStep === 0) {
+      generateGameData(hardMode);
+    }
+  }, [screen, gameStep, hardMode]);
+
+  const handleStartGame = () => {
+    setGameStep(1);
+    setShowMemoryItems(true);
+    setGameScore(0);
+    setUserSelections([]);
+    
+    // Hide memory items after 5 seconds
+    setTimeout(() => {
+      setShowMemoryItems(false);
+    }, 5000);
+  };
+
+  const handleGameStepNext = (points: number = 0) => {
+    setGameScore(prev => prev + points);
+    setGameStep(prev => prev + 1);
+    setGameFeedback('');
+    setSelectedAnswer(null);
+    setIsProcessing(false);
+  };
+
+  const handleAnswerWithFeedback = (isCorrect: boolean, index: number) => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
+    setSelectedAnswer(index);
+    setGameFeedback(isCorrect ? t.game.correct : t.game.wrong);
+    
+    setTimeout(() => {
+      handleGameStepNext(isCorrect ? 1 : 0);
+    }, 1500);
+  };
+
+  const resetGame = () => {
+    setGameStep(0);
+    setGameScore(0);
+    setUserSelections([]);
+    setGameFeedback('');
+    setSelectedAnswer(null);
+    setIsProcessing(false);
+  };
 
   const highRiskCount = useMemo(() => {
     return (Object.values(answers) as Option[]).filter(a => a.risk === 'high').length;
@@ -186,35 +273,48 @@ export default function App() {
                 <h2 className="text-2xl font-bold mb-2 tracking-tight">{t.home.tagline}</h2>
               </div>
 
-              <div className="grid gap-6 w-full max-w-xs">
+              <div className="grid grid-cols-2 gap-4 w-full max-w-sm px-4">
                 <button 
                   onClick={handleCheckRisk}
-                  className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 rounded-3xl flex items-center justify-center gap-4 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(147,51,234,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
-                  <div className="w-10 h-10 bg-purple-500/30 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <Activity className="text-purple-300" size={22} />
+                  <div className="w-12 h-12 bg-purple-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Activity className="text-purple-300" size={24} />
                   </div>
-                  <h3 className="text-xl font-bold tracking-wide">{t.home.checkRisk}</h3>
+                  <h3 className="text-base font-bold tracking-wide">{t.home.checkRisk}</h3>
                 </button>
 
                 <button 
                   onClick={handleLearnMore}
-                  className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 rounded-3xl flex items-center justify-center gap-4 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(59,130,246,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
-                  <div className="w-10 h-10 bg-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <Info className="text-blue-300" size={22} />
+                  <div className="w-12 h-12 bg-blue-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Info className="text-blue-300" size={24} />
                   </div>
-                  <h3 className="text-xl font-bold tracking-wide">{t.home.learnMore}</h3>
+                  <h3 className="text-base font-bold tracking-wide">{t.home.learnMore}</h3>
+                </button>
+
+                <button 
+                  onClick={() => {
+                    setScreen('game');
+                    resetGame();
+                  }}
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(249,115,22,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                >
+                  <div className="w-12 h-12 bg-orange-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Gamepad2 className="text-orange-300" size={24} />
+                  </div>
+                  <h3 className="text-base font-bold tracking-wide">{lang === 'en' ? 'Game' : 'ක්‍රීඩාව'}</h3>
                 </button>
 
                 <button 
                   onClick={handleConnect}
-                  className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 rounded-3xl flex items-center justify-center gap-4 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(34,197,94,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
-                  <div className="w-10 h-10 bg-green-500/30 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <Users className="text-green-300" size={22} />
+                  <div className="w-12 h-12 bg-green-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Users className="text-green-300" size={24} />
                   </div>
-                  <h3 className="text-xl font-bold tracking-wide">{t.home.connect}</h3>
+                  <h3 className="text-base font-bold tracking-wide">{t.home.connect}</h3>
                 </button>
               </div>
             </motion.div>
@@ -380,45 +480,343 @@ export default function App() {
             </motion.div>
           )}
 
+          {screen === 'game' && (
+            <motion.div 
+              key="game"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full flex flex-col"
+            >
+              {gameStep === 0 && (
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-8">
+                  <div className="w-20 h-20 bg-purple-500/20 rounded-3xl flex items-center justify-center shadow-xl">
+                    <Gamepad2 size={48} className="text-purple-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-bold tracking-tight">{t.game.title}</h2>
+                    <p className="text-white/60 text-sm max-w-xs mx-auto">{t.game.intro}</p>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 p-6 rounded-3xl w-full max-w-xs space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-sm">{t.game.hardMode}</span>
+                      <button 
+                        onClick={() => setHardMode(!hardMode)}
+                        className={`w-12 h-6 rounded-full transition-all relative ${hardMode ? 'bg-purple-500' : 'bg-white/20'}`}
+                      >
+                        <motion.div 
+                          animate={{ x: hardMode ? 24 : 4 }}
+                          className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-md"
+                        />
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-white/40 leading-tight">
+                      {hardMode ? "More items and complex questions." : "Standard cognitive exercise."}
+                    </p>
+                  </div>
+
+                  <button 
+                    onClick={handleStartGame}
+                    className="w-full max-w-xs bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-purple-500/20 transition-all flex items-center justify-center gap-2 group"
+                  >
+                    {t.game.start}
+                    <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              )}
+
+              {gameStep === 1 && (
+                <div className="h-full flex flex-col space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-bold">{t.game.step1Title}</h3>
+                    <div className="bg-purple-500/20 px-3 py-1 rounded-full text-[10px] font-bold text-purple-400">1/4</div>
+                  </div>
+                  <p className="text-white/60 text-sm">{t.game.step1Desc}</p>
+                  
+                  <div className="flex-1 flex items-center justify-center">
+                    {showMemoryItems ? (
+                      <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
+                        {dailyGameData?.items.map((item: any, idx: number) => (
+                          <motion.div 
+                            key={idx}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="bg-white/10 border border-white/20 p-4 rounded-2xl flex flex-col items-center gap-2"
+                          >
+                            <span className="text-3xl">{item.icon}</span>
+                            <span className="text-xs font-bold">{item.name[lang]}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : (
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center space-y-6"
+                      >
+                        <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+                          <Eye size={32} className="text-green-400" />
+                        </div>
+                        <p className="text-lg font-bold">{t.game.ready}</p>
+                        <button 
+                          onClick={() => handleGameStepNext(0)}
+                          className="bg-purple-500 px-8 py-3 rounded-xl font-bold shadow-lg"
+                        >
+                          {t.game.next}
+                        </button>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {gameStep === 2 && (
+                <div className="h-full flex flex-col space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-bold">{t.game.step2Title}</h3>
+                    <div className="bg-purple-500/20 px-3 py-1 rounded-full text-[10px] font-bold text-purple-400">2/4</div>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 p-6 rounded-3xl flex-1 overflow-y-auto">
+                    <p className="text-lg leading-relaxed text-white/90 italic">
+                      "{dailyGameData?.story.text[lang]}"
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <p className="font-bold text-purple-400">{dailyGameData?.story.question[lang]}</p>
+                    <div className="grid gap-2">
+                      {dailyGameData?.story.options[lang].map((opt: string, idx: number) => {
+                        const isCorrect = idx === dailyGameData.story.correctIndex;
+                        const isSelected = selectedAnswer === idx;
+                        
+                        return (
+                          <button 
+                            key={idx}
+                            disabled={isProcessing}
+                            onClick={() => handleAnswerWithFeedback(isCorrect, idx)}
+                            className={`w-full p-4 rounded-xl text-left text-sm font-medium transition-all border ${
+                              isSelected 
+                                ? isCorrect ? 'bg-green-500/20 border-green-500' : 'bg-red-500/20 border-red-500'
+                                : 'bg-white/10 border-transparent hover:bg-white/20 hover:border-white/20'
+                            }`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <span>{opt}</span>
+                              {isSelected && (
+                                <span className="text-xs font-bold">
+                                  {isCorrect ? t.game.correct : t.game.wrong}
+                                </span>
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {gameStep === 3 && (
+                <div className="h-full flex flex-col space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-bold">{t.game.step3Title}</h3>
+                    <div className="bg-purple-500/20 px-3 py-1 rounded-full text-[10px] font-bold text-purple-400">3/4</div>
+                  </div>
+                  <p className="text-white/60 text-sm">{t.game.step3Desc}</p>
+                  
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-8">
+                    <div className="flex gap-4">
+                      {dailyGameData?.symbols.map((symbol: string, idx: number) => (
+                        <motion.div 
+                          key={idx}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-2xl shadow-lg"
+                        >
+                          {symbol}
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <div className="w-full max-w-xs space-y-4">
+                      <p className="text-center font-bold text-purple-400">
+                        {lang === 'en' 
+                          ? `Which symbol was at position ${dailyGameData.visualQuestion + 1}?` 
+                          : `ස්ථානය ${dailyGameData.visualQuestion + 1} හි තිබූ සංකේතය කුමක්ද?`}
+                      </p>
+                      <div className="grid grid-cols-3 gap-3">
+                        {dailyGameData?.symbols.map((symbol: string, idx: number) => {
+                          const isCorrect = idx === dailyGameData.visualQuestion;
+                          const isSelected = selectedAnswer === idx;
+
+                          return (
+                            <button 
+                              key={idx}
+                              disabled={isProcessing}
+                              onClick={() => handleAnswerWithFeedback(isCorrect, idx)}
+                              className={`p-4 rounded-xl text-2xl transition-all border ${
+                                isSelected 
+                                  ? isCorrect ? 'bg-green-500/20 border-green-500' : 'bg-red-500/20 border-red-500'
+                                  : 'bg-white/10 border-transparent hover:bg-white/20 hover:border-white/20'
+                              }`}
+                            >
+                              {symbol}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {gameStep === 4 && (
+                <div className="h-full flex flex-col space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-bold">{t.game.step4Title}</h3>
+                    <div className="bg-purple-500/20 px-3 py-1 rounded-full text-[10px] font-bold text-purple-400">4/4</div>
+                  </div>
+                  <p className="text-white/60 text-sm">{t.game.step4Desc}</p>
+
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="grid grid-cols-3 gap-3">
+                      {GAME_ITEMS.sort(() => 0.5 - Math.random()).slice(0, 12).map((item, idx) => {
+                        const isSelected = userSelections.find(s => s.id === item.id);
+                        const selectionIndex = userSelections.findIndex(s => s.id === item.id);
+                        
+                        return (
+                          <button 
+                            key={idx}
+                            disabled={isSelected}
+                            onClick={() => {
+                              const newSelections = [...userSelections, item];
+                              setUserSelections(newSelections);
+                              if (newSelections.length === dailyGameData.items.length) {
+                                // Calculate score
+                                let correctCount = 0;
+                                newSelections.forEach((sel, i) => {
+                                  if (sel.id === dailyGameData.items[i].id) correctCount++;
+                                });
+                                handleGameStepNext(correctCount);
+                              }
+                            }}
+                            className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all relative ${
+                              isSelected ? 'bg-purple-500/40 border-purple-500' : 'bg-white/5 border-white/10 hover:bg-white/10'
+                            } border`}
+                          >
+                            <span className="text-2xl">{item.icon}</span>
+                            <span className="text-[8px] font-bold uppercase opacity-60">{item.name[lang]}</span>
+                            {isSelected && (
+                              <div className="absolute -top-2 -right-2 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-[10px] font-bold shadow-lg">
+                                {selectionIndex + 1}
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 items-center justify-center py-2">
+                    {dailyGameData?.items.map((_: any, i: number) => (
+                      <div key={i} className={`w-2 h-2 rounded-full ${i < userSelections.length ? 'bg-purple-400' : 'bg-white/20'}`} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {gameStep === 5 && (
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-8">
+                  <motion.div 
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center shadow-2xl relative"
+                  >
+                    <Trophy size={56} className="text-yellow-400" />
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 border-2 border-dashed border-yellow-500/30 rounded-full"
+                    />
+                  </motion.div>
+
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-bold tracking-tight">{t.game.resultTitle}</h2>
+                    <p className="text-white/60 text-sm">{t.game.score}: <span className="text-purple-400 font-bold text-xl">{gameScore}</span> / {hardMode ? 8 : 7}</p>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 p-6 rounded-3xl w-full max-w-xs">
+                    <p className="text-lg font-medium leading-relaxed italic">
+                      {gameScore >= (hardMode ? 6 : 5) ? t.game.feedbackGood : t.game.feedbackMod}
+                    </p>
+                  </div>
+
+                  <div className="grid gap-3 w-full max-w-xs">
+                    <button 
+                      onClick={resetGame}
+                      className="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                    >
+                      <RotateCcw size={20} />
+                      {t.game.playAgain}
+                    </button>
+                    <button 
+                      onClick={() => setScreen('home')}
+                      className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-2xl transition-all"
+                    >
+                      {t.assessment.back}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+
           {screen === 'community' && (
             <motion.div 
               key="community"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="h-full flex flex-col items-center justify-center text-center py-6"
+              className="h-full flex flex-col space-y-6"
             >
-              <div className="w-14 h-14 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                <Users size={32} className="text-green-400" />
-              </div>
-              <div className="space-y-3 mb-6">
-                <h2 className="text-2xl font-bold">{t.community.title}</h2>
-                <p className="text-base text-white/80 max-w-xs mx-auto leading-relaxed">{t.community.message}</p>
-              </div>
-              <a 
-                href="https://www.facebook.com/groups/sldementia" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-full max-w-xs inline-flex items-center justify-center gap-3 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold py-3.5 px-8 rounded-2xl shadow-xl transition-all mb-6"
-              >
-                <ExternalLink size={20} />
-                {t.community.joinGroup}
-              </a>
-
-              <div className="mt-auto pt-4 border-t border-white/10 w-full space-y-4">
-                <div className="space-y-1">
-                  <p className="text-[10px] text-white/40 italic px-4 leading-tight">
-                    {t.home.disclaimer}
-                  </p>
+              <div className="text-center space-y-4 py-6">
+                <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto">
+                  <Users size={32} className="text-green-400" />
                 </div>
+                <h2 className="text-2xl font-bold">{t.community.title}</h2>
+                <p className="text-white/70 text-sm max-w-xs mx-auto leading-relaxed">
+                  {t.community.message}
+                </p>
+              </div>
+
+              <div className="space-y-4 flex-1">
+                <a 
+                  href="https://www.facebook.com/groups/sldementia" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 transition-all"
+                >
+                  <Users size={20} />
+                  {t.community.joinGroup}
+                </a>
+              </div>
+
+              <div className="space-y-6 pt-6 border-t border-white/10 flex flex-col items-center">
                 <a 
                   href="https://www.facebook.com/maheshmnishantha" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-full max-w-xs inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white/80 font-bold py-3 rounded-xl text-sm transition-all border border-white/10"
+                  className="w-auto px-6 bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-3 transition-all border border-white/10 text-xs"
                 >
-                  App questions? Message me
+                  <ExternalLink size={16} />
+                  {t.community.messageMe}
                 </a>
+
+                <p className="text-[10px] text-white/40 text-center leading-relaxed italic">
+                  {t.home.disclaimer}
+                </p>
               </div>
             </motion.div>
           )}
@@ -444,6 +842,15 @@ export default function App() {
           onClick={handleLearnMore} 
           icon={<Info size={20} />} 
           label={lang === 'en' ? 'Learn' : 'ඉගෙන ගන්න'} 
+        />
+        <NavButton 
+          active={screen === 'game'} 
+          onClick={() => {
+            setScreen('game');
+            resetGame();
+          }} 
+          icon={<Gamepad2 size={20} />} 
+          label={lang === 'en' ? 'Game' : 'ක්‍රීඩාව'} 
         />
         <NavButton 
           active={screen === 'community'} 

@@ -49,6 +49,29 @@ export interface Translation {
     title: string;
     message: string;
     joinGroup: string;
+    messageMe: string;
+  };
+  game: {
+    title: string;
+    intro: string;
+    start: string;
+    step1Title: string;
+    step1Desc: string;
+    ready: string;
+    next: string;
+    step2Title: string;
+    step3Title: string;
+    step3Desc: string;
+    step4Title: string;
+    step4Desc: string;
+    resultTitle: string;
+    score: string;
+    feedbackGood: string;
+    feedbackMod: string;
+    playAgain: string;
+    hardMode: string;
+    correct: string;
+    wrong: string;
   };
   footer: {
     questions: string;
