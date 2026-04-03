@@ -12,6 +12,7 @@ export interface Translation {
     checkRisk: string;
     learnMore: string;
     connect: string;
+    caregiver: string;
     disclaimer: string;
   };
   assessment: {
@@ -75,6 +76,35 @@ export interface Translation {
   };
   footer: {
     questions: string;
+  };
+  caregiverSupport: {
+    title: string;
+    tagline: string;
+    checklist: {
+      title: string;
+      items: string[];
+      done: string;
+    };
+    whatToDo: {
+      title: string;
+      scenarios: {
+        q: string;
+        steps: string[];
+      }[];
+    };
+    tips: {
+      title: string;
+      items: {
+        title: string;
+        desc: string;
+      }[];
+    };
+    stress: {
+      title: string;
+      breath: string;
+      breathDesc: string;
+      messages: string[];
+    };
   };
 }
 

@@ -32,7 +32,15 @@ import {
   Trophy,
   Eye,
   BookOpen,
-  ListOrdered
+  ListOrdered,
+  HeartPulse,
+  ClipboardCheck,
+  Lightbulb,
+  MessageSquare,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Save
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRANSLATIONS, QUESTIONS, LEARN_CONTENT, GAME_ITEMS, GAME_SYMBOLS, GAME_STORIES } from './constants';
@@ -55,11 +63,58 @@ const getIcon = (iconName: string, size = 24) => {
     case 'Wind': return <Wind size={size} />;
     case 'Heart': return <Heart size={size} />;
     case 'Moon': return <Moon size={size} />;
+    case 'HeartPulse': return <Heart size={size} />;
+    case 'ClipboardCheck': return <ListOrdered size={size} />;
+    case 'Lightbulb': return <BookOpen size={size} />;
+    case 'Wind': return <Wind size={size} />;
+    case 'MessageSquare': return <Info size={size} />;
     default: return <Info size={size} />;
   }
 };
 
-type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community' | 'game';
+type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community' | 'game' | 'support';
+
+const BoxBreathing = () => {
+  const [phase, setPhase] = useState(0); // 0: Inhale, 1: Hold, 2: Exhale, 3: Hold
+  const phases = ['Inhale', 'Hold', 'Exhale', 'Hold'];
+  const colors = ['text-blue-400', 'text-green-400', 'text-purple-400', 'text-yellow-400'];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhase((prev) => (prev + 1) % 4);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center space-y-6 py-4">
+      <div className="relative w-32 h-32 flex items-center justify-center">
+        <motion.div
+          animate={{
+            scale: phase === 0 ? [1, 1.5] : phase === 1 ? 1.5 : phase === 2 ? [1.5, 1] : 1,
+            rotate: phase * 90,
+            borderRadius: phase % 2 === 0 ? "20%" : "50%"
+          }}
+          transition={{ duration: 4, ease: "linear" }}
+          className="absolute inset-0 border-4 border-pink-500/30"
+        />
+        <motion.span
+          key={phase}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className={`text-xl font-bold ${colors[phase]}`}
+        >
+          {phases[phase]}
+        </motion.span>
+      </div>
+      <div className="flex gap-2">
+        {phases.map((_, i) => (
+          <div key={i} className={`w-2 h-2 rounded-full ${i === phase ? 'bg-pink-500' : 'bg-white/20'}`} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -68,6 +123,10 @@ export default function App() {
   const [answers, setAnswers] = useState<Record<number, Option>>({});
   const [showFullReport, setShowFullReport] = useState(false);
   const [showWarnings, setShowWarnings] = useState(false);
+  const [checklistStatus, setChecklistStatus] = useState<Record<number, boolean>>(() => {
+    const saved = localStorage.getItem('checklistStatus');
+    return saved ? JSON.parse(saved) : {};
+  });
 
   // Game State
   const [gameStep, setGameStep] = useState<number>(0); // 0: Intro, 1: Memory, 2: Story, 3: Visual, 4: Recall, 5: Results
@@ -79,6 +138,10 @@ export default function App() {
   const [gameFeedback, setGameFeedback] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('checklistStatus', JSON.stringify(checklistStatus));
+  }, [checklistStatus]);
 
   const t = TRANSLATIONS[lang];
 
@@ -269,14 +332,10 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="space-y-8 flex flex-col h-full items-center justify-center"
             >
-              <div className="text-center py-4">
-                <h2 className="text-2xl font-bold mb-2 tracking-tight">{t.home.tagline}</h2>
-              </div>
-
               <div className="grid grid-cols-2 gap-4 w-full max-w-sm px-4">
                 <button 
                   onClick={handleCheckRisk}
-                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(147,51,234,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                  className="col-span-2 h-32 bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(147,51,234,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
                   <div className="w-12 h-12 bg-purple-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                     <Activity className="text-purple-300" size={24} />
@@ -305,6 +364,16 @@ export default function App() {
                     <Gamepad2 className="text-orange-300" size={24} />
                   </div>
                   <h3 className="text-base font-bold tracking-wide">{lang === 'en' ? 'Game' : 'ක්‍රීඩාව'}</h3>
+                </button>
+
+                <button 
+                  onClick={() => setScreen('support')}
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(236,72,153,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                >
+                  <div className="w-12 h-12 bg-pink-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Heart className="text-pink-300" size={24} />
+                  </div>
+                  <h3 className="text-base font-bold tracking-wide">{t.home.caregiver}</h3>
                 </button>
 
                 <button 
@@ -820,6 +889,127 @@ export default function App() {
               </div>
             </motion.div>
           )}
+
+          {screen === 'support' && (
+            <motion.div 
+              key="support"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full flex flex-col space-y-8"
+            >
+              {/* Header */}
+              <div className="text-center space-y-2 py-4">
+                <div className="w-16 h-16 bg-pink-500/20 rounded-2xl flex items-center justify-center mx-auto">
+                  <HeartPulse size={32} className="text-pink-400" />
+                </div>
+                <h2 className="text-2xl font-bold">{t.caregiverSupport.title}</h2>
+                <p className="text-white/70 text-sm max-w-xs mx-auto leading-relaxed">
+                  {t.caregiverSupport.tagline}
+                </p>
+              </div>
+
+              <div className="flex-1 overflow-y-auto space-y-8 pb-10">
+                {/* Daily Checklist */}
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-green-400">
+                    <ClipboardCheck size={20} />
+                    <h3 className="font-bold">{t.caregiverSupport.checklist.title}</h3>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
+                    {t.caregiverSupport.checklist.items.map((item, idx) => (
+                      <button 
+                        key={idx}
+                        onClick={() => setChecklistStatus(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                        className={`w-full p-4 flex items-center gap-4 border-b border-white/5 last:border-0 transition-colors ${checklistStatus[idx] ? 'bg-green-500/10' : 'hover:bg-white/5'}`}
+                      >
+                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${checklistStatus[idx] ? 'bg-green-500 border-green-500' : 'border-white/20'}`}>
+                          {checklistStatus[idx] && <CheckCircle2 size={16} className="text-white" />}
+                        </div>
+                        <span className={`text-sm font-medium ${checklistStatus[idx] ? 'text-green-300 line-through' : 'text-white/90'}`}>
+                          {item}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  {Object.values(checklistStatus).filter(Boolean).length === t.caregiverSupport.checklist.items.length && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-center text-green-400 font-bold text-sm py-2"
+                    >
+                      ✨ {t.caregiverSupport.checklist.done}
+                    </motion.p>
+                  )}
+                </section>
+
+                {/* What to Do If Section */}
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-yellow-400">
+                    <Lightbulb size={20} />
+                    <h3 className="font-bold">{t.caregiverSupport.whatToDo.title}</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {t.caregiverSupport.whatToDo.scenarios.map((scenario, idx) => (
+                      <details key={idx} className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all">
+                        <summary className="p-4 flex items-center justify-between cursor-pointer list-none hover:bg-white/5">
+                          <span className="text-sm font-bold text-white/90">{scenario.q}</span>
+                          <ChevronDown size={18} className="text-white/40 group-open:rotate-180 transition-transform" />
+                        </summary>
+                        <div className="p-4 pt-0 space-y-3">
+                          {scenario.steps.map((step, sIdx) => (
+                            <div key={sIdx} className="flex gap-3 text-xs text-white/70 leading-relaxed">
+                              <span className="text-yellow-400 font-bold">{sIdx + 1}.</span>
+                              <span>{step}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Behavior Tips */}
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-blue-400">
+                    <MessageSquare size={20} />
+                    <h3 className="font-bold">{t.caregiverSupport.tips.title}</h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {t.caregiverSupport.tips.items.map((tip, idx) => (
+                      <div key={idx} className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-2">
+                        <h4 className="text-xs font-bold text-blue-300">{tip.title}</h4>
+                        <p className="text-[10px] text-white/60 leading-tight">{tip.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Stress Support */}
+                <section className="bg-gradient-to-br from-pink-500/20 to-purple-500/20 border border-pink-500/20 p-6 rounded-3xl space-y-6">
+                  <div className="flex items-center gap-3 text-pink-400">
+                    <HeartPulse size={20} />
+                    <h3 className="font-bold">{t.caregiverSupport.stress.title}</h3>
+                  </div>
+                  
+                  <div className="text-center space-y-3">
+                    <h4 className="text-sm font-bold text-white">{t.caregiverSupport.stress.breath}</h4>
+                    <p className="text-xs text-white/70 leading-relaxed italic">
+                      {t.caregiverSupport.stress.breathDesc}
+                    </p>
+                  </div>
+
+                  <BoxBreathing />
+
+                  <div className="bg-white/10 p-4 rounded-2xl text-center">
+                    <p className="text-sm font-medium text-pink-200">
+                      "{t.caregiverSupport.stress.messages[Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % t.caregiverSupport.stress.messages.length]}"
+                    </p>
+                  </div>
+                </section>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
@@ -851,6 +1041,12 @@ export default function App() {
           }} 
           icon={<Gamepad2 size={20} />} 
           label={lang === 'en' ? 'Game' : 'ක්‍රීඩාව'} 
+        />
+        <NavButton 
+          active={screen === 'support'} 
+          onClick={() => setScreen('support')} 
+          icon={<Heart size={20} />} 
+          label={lang === 'en' ? 'Support' : 'සහාය'} 
         />
         <NavButton 
           active={screen === 'community'} 

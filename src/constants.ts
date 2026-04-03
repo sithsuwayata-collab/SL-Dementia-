@@ -13,6 +13,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
       checkRisk: "Assess",
       learnMore: "Learn",
       connect: "Community",
+      caregiver: "Support",
       disclaimer: "This app does not provide a medical diagnosis. It is designed to promote awareness, connection, and support."
     },
     assessment: {
@@ -76,6 +77,41 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     },
     footer: {
       questions: "App questions? Message me: @maheshmnishantha"
+    },
+    caregiverSupport: {
+      title: "Caregiver Support",
+      tagline: "Simple daily guidance and emotional support for you.",
+      checklist: {
+        title: "Daily Care Checklist",
+        items: ["Morning hygiene", "Medication", "Hydration", "Short walk", "Calm activity"],
+        done: "Done for today!"
+      },
+      whatToDo: {
+        title: "What to Do If...",
+        scenarios: [
+          { q: "Patient is agitated", steps: ["Stay calm and speak softly", "Check for physical discomfort", "Redirect to a favorite activity"] },
+          { q: "They refuse to eat", steps: ["Offer small, frequent meals", "Try different textures or colors", "Eat together to encourage them"] },
+          { q: "They forget you", steps: ["Don't take it personally", "Introduce yourself gently", "Focus on the present moment"] },
+          { q: "Sun-downing (evening confusion)", steps: ["Keep lights bright in early evening", "Maintain a calm routine", "Minimize noise and distractions"] },
+          { q: "Wandering", steps: ["Ensure a safe, enclosed space", "Use door alarms or sensors", "Keep a recent photo and ID ready"] },
+          { q: "Difficulty communicating", steps: ["Use simple yes/no questions", "Be patient and give them time", "Use gestures and visual cues"] }
+        ]
+      },
+      tips: {
+        title: "Practical Behavior Tips",
+        items: [
+          { title: "Speak slowly", desc: "Give them time to process your words." },
+          { title: "Use eye contact", desc: "It helps them focus on you." },
+          { title: "Do not argue", desc: "It only increases stress for both." },
+          { title: "Redirect gently", desc: "Shift focus if they get stuck." }
+        ]
+      },
+      stress: {
+        title: "Caregiver Stress Support",
+        breath: "Take a Breath",
+        breathDesc: "Follow the animation to calm your mind.",
+        messages: ["You are doing enough.", "It's okay to feel tired.", "Your care makes a difference.", "Remember to breathe."]
+      }
     }
   },
   si: {
@@ -90,6 +126,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
       checkRisk: "තක්සේරු",
       learnMore: "ඉගෙනුම",
       connect: "ප්‍රජාව",
+      caregiver: "සහාය",
       disclaimer: "මෙම යෙදුම වෛද්‍ය රෝග විනිශ්චයක් ලබා නොදේ. එය දැනුවත් කිරීම, සම්බන්ධතාවය සහ සහයෝගය ප්‍රවර්ධනය කිරීම සඳහා නිර්මාණය කර ඇත."
     },
     assessment: {
@@ -153,6 +190,41 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     },
     footer: {
       questions: "යෙදුම පිළිබඳ ප්‍රශ්න? මට පණිවිඩයක් එවන්න: @maheshmnishantha"
+    },
+    caregiverSupport: {
+      title: "රැකබලා ගන්නන්ගේ සහාය",
+      tagline: "ඔබ වෙනුවෙන් සරල දෛනික මග පෙන්වීම සහ මානසික සහාය.",
+      checklist: {
+        title: "දෛනික සත්කාර පිරික්සුම් ලැයිස්තුව",
+        items: ["උදෑසන සනීපාරක්ෂාව", "ඖෂධ ලබා දීම", "ජලය පානය කිරීම", "කෙටි ඇවිදීම", "සන්සුන් ක්‍රියාකාරකමක්"],
+        done: "අද දින සඳහා අවසන්!"
+      },
+      whatToDo: {
+        title: "කුමක් කළ යුතුද...",
+        scenarios: [
+          { q: "රෝගියා කලබල වී ඇත්නම්", steps: ["සන්සුන්ව සිටින්න සහ මෘදු ලෙස කතා කරන්න", "ශාරීරික අපහසුතාවයක් ඇත්දැයි පරීක්ෂා කරන්න", "ප්‍රියතම ක්‍රියාකාරකමකට යොමු කරන්න"] },
+          { q: "ආහාර ගැනීම ප්‍රතික්ෂේප කරන්නේ නම්", steps: ["කුඩා, නිතර ආහාර වේල් ලබා දෙන්න", "විවිධ රසයන් හෝ වර්ණ උත්සාහ කරන්න", "ඔවුන් දිරිමත් කිරීමට එකට ආහාර ගන්න"] },
+          { q: "ඔබව අමතක වී ඇත්නම්", steps: ["එය පෞද්ගලිකව ගන්න එපා", "මෘදු ලෙස ඔබව හඳුන්වා දෙන්න", "වර්තමාන මොහොත කෙරෙහි අවධානය යොමු කරන්න"] },
+          { q: "සවස් කාලයේ ව්‍යාකූලත්වය (Sun-downing)", steps: ["සවස් කාලයේ ආලෝකය වැඩි කරන්න", "සන්සුන් දින චරියාවක් පවත්වා ගන්න", "ශබ්දය සහ බාධා අවම කරන්න"] },
+          { q: "අතරමං වීම (Wandering)", steps: ["ආරක්ෂිත, සංවෘත අවකාශයක් සහතික කරන්න", "දොර සීනු හෝ සංවේදක භාවිතා කරන්න", "මෑතකදී ගත් ඡායාරූපයක් සහ හැඳුනුම්පතක් සූදානම්ව තබා ගන්න"] },
+          { q: "සන්නිවේදනය කිරීමේ අපහසුව", steps: ["සරල ඔව්/නැහැ ප්‍රශ්න භාවිතා කරන්න", "ඉවසිලිවන්ත වන්න සහ ඔවුන්ට කාලය දෙන්න", "සංඥා සහ දෘශ්‍ය ඉඟි භාවිතා කරන්න"] }
+        ]
+      },
+      tips: {
+        title: "ප්‍රායෝගික හැසිරීම් උපදෙස්",
+        items: [
+          { title: "සෙමින් කතා කරන්න", desc: "ඔබේ වචන තේරුම් ගැනීමට ඔවුන්ට කාලය දෙන්න." },
+          { title: "ඇස් දෙස බලා කතා කරන්න", desc: "එය ඔවුන්ට ඔබ කෙරෙහි අවධානය යොමු කිරීමට උපකාරී වේ." },
+          { title: "තර්ක නොකරන්න", desc: "එය දෙදෙනාගේම ආතතිය වැඩි කරයි." },
+          { title: "මෘදු ලෙස යොමු කරන්න", desc: "ඔවුන් අතරමං වුවහොත් අවධානය වෙනතකට යොමු කරන්න." }
+        ]
+      },
+      stress: {
+        title: "රැකබලා ගන්නන්ගේ ආතතිය සඳහා සහාය",
+        breath: "හුස්මක් ගන්න",
+        breathDesc: "ඔබේ මනස සන්සුන් කිරීමට සජීවිකරණය අනුගමනය කරන්න.",
+        messages: ["ඔබ ප්‍රමාණවත් තරම් කරනවා.", "වෙහෙස දැනීම සාමාන්‍ය දෙයක්.", "ඔබේ සත්කාරය වෙනසක් ඇති කරයි.", "හුස්ම ගැනීමට මතක තබා ගන්න."]
+      }
     }
   }
 };
