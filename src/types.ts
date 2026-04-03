@@ -13,6 +13,7 @@ export interface Translation {
     learnMore: string;
     connect: string;
     caregiver: string;
+    resources: string;
     disclaimer: string;
   };
   assessment: {
@@ -105,6 +106,15 @@ export interface Translation {
       breathDesc: string;
       messages: string[];
     };
+  };
+  resources: {
+    title: string;
+    description: string;
+    sites: {
+      name: string;
+      description: string;
+      url: string;
+    }[];
   };
 }
 

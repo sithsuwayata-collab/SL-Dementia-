@@ -72,7 +72,7 @@ const getIcon = (iconName: string, size = 24) => {
   }
 };
 
-type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community' | 'game' | 'support';
+type Screen = 'welcome' | 'home' | 'assessment' | 'results' | 'learn' | 'community' | 'game' | 'support' | 'resources';
 
 const BoxBreathing = () => {
   const [phase, setPhase] = useState(0); // 0: Inhale, 1: Hold, 2: Exhale, 3: Hold
@@ -335,7 +335,7 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4 w-full max-w-sm px-4">
                 <button 
                   onClick={handleCheckRisk}
-                  className="col-span-2 h-32 bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(147,51,234,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(147,51,234,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
                   <div className="w-12 h-12 bg-purple-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                     <Activity className="text-purple-300" size={24} />
@@ -377,11 +377,21 @@ export default function App() {
                 </button>
 
                 <button 
+                  onClick={() => setScreen('resources')}
+                  className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(168,85,247,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
+                >
+                  <div className="w-12 h-12 bg-purple-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <BookOpen className="text-purple-300" size={24} />
+                  </div>
+                  <h3 className="text-base font-bold tracking-wide">{t.home.resources}</h3>
+                </button>
+
+                <button 
                   onClick={handleConnect}
                   className="aspect-square bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col items-center justify-center gap-3 transition-all text-center group shadow-[0_10px_20px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_25px_rgba(34,197,94,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:translate-y-0.5 active:shadow-inner"
                 >
-                  <div className="w-12 h-12 bg-green-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    <Users className="text-green-300" size={24} />
+                  <div className="w-10 h-10 bg-green-500/30 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Users className="text-green-300" size={20} />
                   </div>
                   <h3 className="text-base font-bold tracking-wide">{t.home.connect}</h3>
                 </button>
@@ -1010,28 +1020,66 @@ export default function App() {
               </div>
             </motion.div>
           )}
+
+          {screen === 'resources' && (
+            <motion.div
+              key="resources"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="h-full flex flex-col space-y-6 overflow-y-auto pb-8"
+            >
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl font-bold tracking-tight">{t.resources.title}</h2>
+                <p className="text-white/60 text-sm">{t.resources.description}</p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                {t.resources.sites.map((site, index) => (
+                  <motion.a
+                    key={index}
+                    href={site.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center justify-between bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-all group"
+                  >
+                    <div className="space-y-1 pr-4">
+                      <h3 className="text-lg font-bold text-purple-300 group-hover:text-purple-200 transition-colors">
+                        {site.name}
+                      </h3>
+                      <p className="text-sm text-white/60 line-clamp-2">
+                        {site.description}
+                      </p>
+                    </div>
+                    <div className="flex-none p-3 bg-white/10 rounded-xl text-white/40 group-hover:text-white group-hover:bg-purple-500/20 transition-all">
+                      <ExternalLink size={20} />
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       {/* Navigation Bar */}
-      <nav className="flex-none bg-[#2d1b4d] border-t border-white/10 px-2 py-2 flex justify-around items-center z-50">
+      <nav className="flex-none bg-[#2d1b4d] border-t border-white/10 px-2 py-1 flex justify-around items-center z-50 h-16">
         <NavButton 
           active={screen === 'home'} 
           onClick={() => setScreen('home')} 
-          icon={<Brain size={20} />} 
-          label={lang === 'en' ? 'Home' : 'මුල් පිටුව'} 
+          icon={<Brain size={24} />} 
         />
         <NavButton 
           active={screen === 'assessment' || screen === 'results'} 
           onClick={handleCheckRisk} 
-          icon={<Activity size={20} />} 
-          label={lang === 'en' ? 'Risk' : 'අවදානම'} 
+          icon={<Activity size={24} />} 
         />
         <NavButton 
           active={screen === 'learn'} 
           onClick={handleLearnMore} 
-          icon={<Info size={20} />} 
-          label={lang === 'en' ? 'Learn' : 'ඉගෙන ගන්න'} 
+          icon={<Info size={24} />} 
         />
         <NavButton 
           active={screen === 'game'} 
@@ -1039,20 +1087,22 @@ export default function App() {
             setScreen('game');
             resetGame();
           }} 
-          icon={<Gamepad2 size={20} />} 
-          label={lang === 'en' ? 'Game' : 'ක්‍රීඩාව'} 
+          icon={<Gamepad2 size={24} />} 
         />
         <NavButton 
           active={screen === 'support'} 
           onClick={() => setScreen('support')} 
-          icon={<Heart size={20} />} 
-          label={lang === 'en' ? 'Support' : 'සහාය'} 
+          icon={<Heart size={24} />} 
+        />
+        <NavButton 
+          active={screen === 'resources'} 
+          onClick={() => setScreen('resources')} 
+          icon={<BookOpen size={24} />} 
         />
         <NavButton 
           active={screen === 'community'} 
           onClick={handleConnect} 
-          icon={<Users size={20} />} 
-          label={lang === 'en' ? 'Community' : 'ප්‍රජාව'} 
+          icon={<Users size={24} />} 
         />
       </nav>
 
@@ -1195,19 +1245,18 @@ export default function App() {
   );
 }
 
-function NavButton({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+function NavButton({ active, onClick, icon }: { active: boolean; onClick: () => void; icon: React.ReactNode }) {
   return (
     <button 
       onClick={onClick}
-      className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-all ${
+      className={`flex flex-col items-center justify-center px-2 py-2 rounded-xl transition-all ${
         active ? 'text-purple-400' : 'text-white/40 hover:text-white/60'
       }`}
     >
       <div className={`transition-transform duration-200 ${active ? 'scale-110' : 'scale-100'}`}>
         {icon}
       </div>
-      <span className="text-[9px] font-bold uppercase tracking-tighter">{label}</span>
-      {active && <motion.div layoutId="nav-indicator" className="w-1 h-1 bg-purple-400 rounded-full mt-0.5" />}
+      {active && <motion.div layoutId="nav-indicator" className="w-1 h-1 bg-purple-400 rounded-full mt-1" />}
     </button>
   );
 }

@@ -10,10 +10,11 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
     },
     home: {
       tagline: "Support starts with awareness.",
-      checkRisk: "Assess",
+      checkRisk: "Risk",
       learnMore: "Learn",
       connect: "Community",
       caregiver: "Support",
+      resources: "Resources",
       disclaimer: "This app does not provide a medical diagnosis. It is designed to promote awareness, connection, and support."
     },
     assessment: {
@@ -112,6 +113,37 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
         breathDesc: "Follow the animation to calm your mind.",
         messages: ["You are doing enough.", "It's okay to feel tired.", "Your care makes a difference.", "Remember to breathe."]
       }
+    },
+    resources: {
+      title: "Global Resources",
+      description: "Curated websites for more information, updates, and practical guidance.",
+      sites: [
+        {
+          name: "Alzheimer’s Association",
+          description: "One of the most complete dementia resources in the world.",
+          url: "https://www.alz.org"
+        },
+        {
+          name: "Alzheimer Society of Canada",
+          description: "Relevant locally for those in Canada.",
+          url: "https://alzheimer.ca"
+        },
+        {
+          name: "Alzheimer’s Society (UK)",
+          description: "Clear and easy-to-understand content.",
+          url: "https://www.alzheimers.org.uk"
+        },
+        {
+          name: "Dementia Australia",
+          description: "Very practical and caregiver-focused.",
+          url: "https://www.dementia.org.au"
+        },
+        {
+          name: "National Institute on Aging",
+          description: "Science and medical-focused, but very reliable.",
+          url: "https://www.nia.nih.gov"
+        }
+      ]
     }
   },
   si: {
@@ -127,6 +159,7 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
       learnMore: "ඉගෙනුම",
       connect: "ප්‍රජාව",
       caregiver: "සහාය",
+      resources: "සම්පත්",
       disclaimer: "මෙම යෙදුම වෛද්‍ය රෝග විනිශ්චයක් ලබා නොදේ. එය දැනුවත් කිරීම, සම්බන්ධතාවය සහ සහයෝගය ප්‍රවර්ධනය කිරීම සඳහා නිර්මාණය කර ඇත."
     },
     assessment: {
@@ -225,6 +258,37 @@ export const TRANSLATIONS: Record<'en' | 'si', Translation> = {
         breathDesc: "ඔබේ මනස සන්සුන් කිරීමට සජීවිකරණය අනුගමනය කරන්න.",
         messages: ["ඔබ ප්‍රමාණවත් තරම් කරනවා.", "වෙහෙස දැනීම සාමාන්‍ය දෙයක්.", "ඔබේ සත්කාරය වෙනසක් ඇති කරයි.", "හුස්ම ගැනීමට මතක තබා ගන්න."]
       }
+    },
+    resources: {
+      title: "ගෝලීය සම්පත්",
+      description: "වැඩි විස්තර, යාවත්කාලීන කිරීම් සහ ප්‍රායෝගික මග පෙන්වීම් සඳහා තෝරාගත් වෙබ් අඩවි.",
+      sites: [
+        {
+          name: "Alzheimer’s Association",
+          description: "ලොව වඩාත්ම සම්පූර්ණ ඩිමෙන්ශියා සම්පත් වලින් එකකි.",
+          url: "https://www.alz.org"
+        },
+        {
+          name: "Alzheimer Society of Canada",
+          description: "කැනඩාවේ සිටින අයට දේශීයව අදාළ වේ.",
+          url: "https://alzheimer.ca"
+        },
+        {
+          name: "Alzheimer’s Society (UK)",
+          description: "පැහැදිලි සහ තේරුම් ගැනීමට පහසු අන්තර්ගතයක් ඇත.",
+          url: "https://www.alzheimers.org.uk"
+        },
+        {
+          name: "Dementia Australia",
+          description: "ඉතා ප්‍රායෝගික සහ රැකබලා ගන්නන් කෙරෙහි අවධානය යොමු කර ඇත.",
+          url: "https://www.dementia.org.au"
+        },
+        {
+          name: "National Institute on Aging",
+          description: "විද්‍යාත්මක සහ වෛද්‍ය විද්‍යාව කෙරෙහි වැඩි අවධානයක් යොමු කර ඇත, නමුත් ඉතා විශ්වාසදායකය.",
+          url: "https://www.nia.nih.gov"
+        }
+      ]
     }
   }
 };
